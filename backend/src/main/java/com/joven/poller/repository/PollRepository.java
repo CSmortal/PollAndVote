@@ -13,7 +13,7 @@ public interface PollRepository extends JpaRepository<Poll,Long> {
 
     @Transactional
     @Modifying
-    @Query("UPDATE Poll p SET p.hasEnded = true WHERE p = :poll")
-    public void endPoll(@Param("poll") Poll poll);
+    @Query("UPDATE Poll p SET p.hasEnded = true WHERE p.pollId = :pollId")
+    public void endPoll(@Param("pollId") Long pollId);
 
 }

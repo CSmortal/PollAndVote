@@ -1,6 +1,7 @@
 package com.joven.poller.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,14 +18,14 @@ public class Poll {
     @GeneratedValue
     private Long pollId;
 
-    @NotNull
+    @Column(name = "content")
     private String pollContent;
 
-    @NotNull
-    private boolean isOnlyOneSelection;
+    @Column(name = "one_choice_only")
+    private boolean onlyOneSelection;
 
-    @NotNull
-    private boolean hasEnded; // poll must be manually ended by user
+    @Column(name = "ended")
+    private boolean hasEnded = false; // poll must be manually ended by user
 
     @ManyToOne(
             optional = false

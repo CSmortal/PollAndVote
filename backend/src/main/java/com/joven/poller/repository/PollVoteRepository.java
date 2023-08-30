@@ -16,8 +16,8 @@ import java.util.List;
 public interface PollVoteRepository extends JpaRepository<PollVote,Long> {
     @Query(
             nativeQuery = true,
-            value = "SELECT count(poll_vote_id) FROM pollvote pV WHERE pV.poll_option_id = :pollOptionId"
+            value = "SELECT count(poll_vote_id) FROM poll_vote pV WHERE pV.poll_option_id = :pollOptionId"
     )
-    public Integer countPollVotesForPollOption(@Param("pollOptionId") PollOption pollOption);
+    public Integer countPollVotesForPollOption(@Param("pollOptionId") Long pollOptionId);
 
 }

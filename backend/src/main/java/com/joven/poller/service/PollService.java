@@ -40,14 +40,13 @@ public class PollService {
         }
     }
 
-    public void endPoll(@RequestBody Poll poll) throws InvalidPollDataException {
-        Poll pollToEnd = pollRepository.findById(poll.getPollId())
-                .orElseThrow(InvalidPollDataException::new);
-
-        pollRepository.endPoll(pollToEnd);
+    public void endPoll(Long pollId) throws InvalidPollDataException {
+//        Poll pollToEnd = pollRepository.findById(poll.getPollId())
+//                .orElseThrow(InvalidPollDataException::new);
+        pollRepository.endPoll(pollId);
     }
 
-    public PollResponse getPollResults(Long pollId, User requestor) throws InvalidPollDataException {
+    public PollResponse getPollResults(Long pollId, Long requestorId) throws InvalidPollDataException {
         // get the poll from db. If the poll hasnt ended, then we return a diff response, unless the person who requested this action is the poll creator himself
         // if poll has ended, then everyone can see the results
 
@@ -65,7 +64,7 @@ public class PollService {
 
         int totalVotesCount = 0;
         for (PollOption option : pollOptions) {
-            Integer votesForOption =  pollVoteRepository.countPollVotesForPollOption(option);
+            Integer votesForOption =  pollVoteRepository.countPollVotesForPollOption(option.getPollOptionId());
             mapOptionsToPercentageVoted.put(option.getPollOptionContent(), Double.valueOf(votesForOption));
             mapOptionToOptionId.put(option.getPollOptionContent(), option.getPollOptionId());
             totalVotesCount += votesForOption;
@@ -75,7 +74,7 @@ public class PollService {
             entry.setValue(entry.getValue() / totalVotesCount);
         }
 
-        if (poll.isHasEnded() || poll.getUser().equals(requestor)) {
+        if (poll.isHasEnded() || poll.getUser().getUserId().equals(requestorId)) {
             return PollResponse.builder()
                     .isLimitedView(false)
                     .totalVotes(totalVotesCount)

@@ -1,7 +1,9 @@
 package com.joven.poller.controller;
 
+import com.joven.poller.dto.CreatePollDTO;
 import com.joven.poller.dto.PollDTO;
 import com.joven.poller.dto.PollOptionDTO;
+import com.joven.poller.dto.VoteDTO;
 import com.joven.poller.entity.Poll;
 import com.joven.poller.entity.PollOption;
 import com.joven.poller.entity.User;
@@ -9,6 +11,9 @@ import com.joven.poller.exception.InvalidPollDataException;
 import com.joven.poller.response.PollResponse;
 import com.joven.poller.service.PollService;
 import com.joven.poller.service.UserService;
+import com.joven.poller.validation.CreatePollDTOValidator;
+import com.joven.poller.validation.PollDTOValidator;
+import com.joven.poller.validation.VoteDTOValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +27,7 @@ import java.util.Optional;
 @RequestMapping(path = "/api")
 @RequiredArgsConstructor
 public class ApplicationController {
+    public static final String INCORRECT_REQUEST_BODY = "body of request is not correct";
     // 4 features: Create poll, End poll, View poll results, Vote on a poll
 
     // might have a 5th feature to revote if you already voted
@@ -30,17 +36,27 @@ public class ApplicationController {
     private final UserService userService;
 
     @PostMapping(path = "/addPoll")
-    public ResponseEntity<Boolean> createPoll(@RequestBody PollDTO pollDto, @RequestBody List<PollOptionDTO> pollOptionDtoList) throws InvalidPollDataException {
+    public ResponseEntity<Boolean> createPoll(@RequestBody CreatePollDTO createPollDto) throws InvalidPollDataException {
         // From the DTOs, we create the actual Poll, User and PollOption entities.
-        Optional<User> userOpt = userService.findUserByEmail(pollDto.getUserEmail());
-        if (userOpt.isEmpty()) {
-            throw new InvalidPollDataException("no such user with the given email");
+        boolean isDtoInvalid = !CreatePollDTOValidator.validate(createPollDto);
+
+        if (isDtoInvalid) {
+            throw new InvalidPollDataException(INCORRECT_REQUEST_BODY);
         }
-        User userWhoIsCreatingPoll = userOpt.get();
+
+        PollDTO pollDto = createPollDto.getPollDto();
+        List<PollOptionDTO> pollOptionDtoList = createPollDto.getPollOptionDtoList();
+
+//        Optional<User> userOpt = userService.findUserByEmail(pollDto.getUserEmail());
+//        if (userOpt.isEmpty()) {
+//            throw new InvalidPollDataException("no such user with the given email");
+//        }
+//        User userWhoIsCreatingPoll = userOpt.get();
+        User userWhoIsCreatingPoll = new User(pollDto.getUserId());
 
         Poll newPoll = Poll.builder()
                 .pollContent(pollDto.getPollContent())
-                .isOnlyOneSelection(pollDto.isOnlyOneSelection())
+                .onlyOneSelection(pollDto.isOnlyOneSelection())
                 .hasEnded(false)
                 .user(userWhoIsCreatingPoll)
                 .build();
@@ -64,21 +80,22 @@ public class ApplicationController {
         }
     }
 
-    @PutMapping(path = "/endPoll")
-    public ResponseEntity<Boolean> endPoll(@RequestBody Poll poll) {
+    @PutMapping(path = "/endPoll/{pollId}")
+    public ResponseEntity<Boolean> endPoll(@PathVariable(value = "pollId") Long pollId) {
         try {
-            pollService.endPoll(poll);
+            pollService.endPoll(pollId);
             return ResponseEntity.ok().build();
-        } catch (InvalidPollDataException e) {
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
             return ResponseEntity.badRequest().build();
         }
 
     }
 
     @GetMapping(path = "/getPoll")
-    public ResponseEntity<PollResponse> getPollResults(@RequestBody Long pollId, @RequestBody User actionRequester) {
+    public ResponseEntity<PollResponse> getPollResults(@RequestParam Long pollId, @RequestParam Long userId) {
         try {
-            PollResponse result = pollService.getPollResults(pollId, actionRequester);
+            PollResponse result = pollService.getPollResults(pollId, userId);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -87,13 +104,17 @@ public class ApplicationController {
     }
 
     @PostMapping(path = "/vote")
-    public ResponseEntity<Boolean> voteOnPoll(
-            @RequestParam Long pollId,
-            @RequestParam Long userId,
-            @RequestBody List<Long> listOfSelectedOptionIds
-            ) {
+    public ResponseEntity<Boolean> voteOnPoll(@RequestBody VoteDTO voteDto) throws InvalidPollDataException {
+        boolean isDtoInvalid = !VoteDTOValidator.validate(voteDto);
+        if (isDtoInvalid) {
+            throw new InvalidPollDataException(INCORRECT_REQUEST_BODY);
+        }
+
         try {
-            boolean isSuccessfulInVoting = pollService.voteOnPoll(pollId, userId, listOfSelectedOptionIds);
+            boolean isSuccessfulInVoting = pollService.voteOnPoll(
+                    voteDto.getPollId(),
+                    voteDto.getUserIdOfVoter(),
+                    voteDto.getOptionIdToVoteList());
 
             if (isSuccessfulInVoting) {
                 return ResponseEntity.ok(true);

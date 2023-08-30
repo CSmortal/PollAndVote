@@ -1,6 +1,7 @@
 package com.joven.poller.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +18,7 @@ public class PollOption {
     @GeneratedValue
     private Long pollOptionId;
 
-    @NotNull
+    @Column(name = "content")
     private String pollOptionContent;
 
     @ManyToOne(
