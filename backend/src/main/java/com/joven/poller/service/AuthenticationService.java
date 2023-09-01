@@ -77,9 +77,10 @@ public class AuthenticationService {
                     .token(token)
                     .success(true)
                     .build();
-        } catch (AuthenticationException e) {
+        } catch (Exception e) {
             return AuthenticationResponse.builder()
                     .success(false)
+                    .errorMsg(e.getMessage())
                     .build();
         }
 

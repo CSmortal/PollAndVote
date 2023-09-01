@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@Builder
 public class PollDTO {
 //    private String userEmail; // used for identification
     private Long userId;

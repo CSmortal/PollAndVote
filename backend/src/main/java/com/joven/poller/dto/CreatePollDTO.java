@@ -11,6 +11,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class CreatePollDTO {
     PollDTO pollDto;
     List<PollOptionDTO> pollOptionDtoList;
