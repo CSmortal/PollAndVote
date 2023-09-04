@@ -10,8 +10,8 @@ import com.joven.poller.repository.PollRepository;
 import com.joven.poller.repository.PollVoteRepository;
 import com.joven.poller.repository.UserRepository;
 import com.joven.poller.response.PollResponse;
+import com.joven.poller.response.PollSurface;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -47,8 +47,10 @@ public class PollService {
     }
 
     public PollResponse getPollResults(Long pollId, Long requestorId) throws InvalidPollDataException {
-        // get the poll from db. If the poll hasnt ended, then we return a diff response, unless the person who requested this action is the poll creator himself
-        // if poll has ended, then everyone can see the results
+        // poll creator user and other users are treated the same
+        // 1. If poll ended -> Unlimited view of all percentages
+        // 2. If poll hasn't ended + user hasn't voted -> Can only see options
+        // 3. If poll hasn't ended + user has voted -> Can see options and what they voted for
 
         // 1. Get poll from db
         Optional<Poll> pollOpt = pollRepository.findById(pollId);
@@ -58,40 +60,68 @@ public class PollService {
         }
 
         Map<String,Double> mapOptionsToPercentageVoted = new HashMap<>();
-        Map<String,Long> mapOptionToOptionId = new HashMap<>();
+        Map<Long,String> mapOptionContentToOptionId = new HashMap<>();
         Poll poll = pollOpt.get();
         List<PollOption> pollOptions = pollOptionRepository.findPollOptionsByPoll(poll);
 
-        int totalVotesCount = 0;
+        long totalVotesCount = poll.getTotalVotes();
         for (PollOption option : pollOptions) {
             Integer votesForOption =  pollVoteRepository.countPollVotesForPollOption(option.getPollOptionId());
             mapOptionsToPercentageVoted.put(option.getPollOptionContent(), Double.valueOf(votesForOption));
-            mapOptionToOptionId.put(option.getPollOptionContent(), option.getPollOptionId());
-            totalVotesCount += votesForOption;
+            mapOptionContentToOptionId.put(option.getPollOptionId(), option.getPollOptionContent());
+//            totalVotesCount += votesForOption;
         }
 
         for (Map.Entry<String,Double> entry : mapOptionsToPercentageVoted.entrySet()) {
-            entry.setValue(entry.getValue() / totalVotesCount);
+            entry.setValue(100 * entry.getValue() / totalVotesCount);
         }
 
-        if (poll.isHasEnded() || poll.getUser().getUserId().equals(requestorId)) {
+        Map<Long,Boolean> mapOptionIdToVoteStatus = new HashMap<>();
+        List<Long> allOptionIdsThatUserVoted = pollVoteRepository.findAllVotesFromUserForPoll(pollId, requestorId);
+        for (Long optionIdVoted : allOptionIdsThatUserVoted) {
+            mapOptionIdToVoteStatus.put(optionIdVoted, true);
+        }
+        boolean hasUserVoted = !allOptionIdsThatUserVoted.isEmpty();
+
+        if (poll.isHasEnded()) {
             return PollResponse.builder()
-                    .isLimitedView(false)
+                    .hasLimitedView(false)
                     .totalVotes(totalVotesCount)
-                    .mapOptionToPercentage(mapOptionsToPercentageVoted)
-                    .mapOptionToOptionId(mapOptionToOptionId)
+                    .mapOptionContentToPercentage(mapOptionsToPercentageVoted)
+                    .mapOptionIdToOptionContent(mapOptionContentToOptionId)
+                    .hasUserVoted(hasUserVoted)
+                    .voteOnlyForOneOption(poll.isOnlyOneSelection())
+                    .mapOptionIdToVoteStatus(mapOptionIdToVoteStatus)
+                    .userIdOfPollCreator(poll.getUser().getUserId())
                     .build();
         } else {
             return PollResponse.builder()
-                    .isLimitedView(true)
+                    .hasLimitedView(true)
                     .totalVotes(totalVotesCount)
-                    .mapOptionToOptionId(mapOptionToOptionId)
+                    .mapOptionIdToOptionContent(mapOptionContentToOptionId)
+                    .hasUserVoted(hasUserVoted)
+                    .voteOnlyForOneOption(poll.isOnlyOneSelection())
+                    .mapOptionIdToVoteStatus(mapOptionIdToVoteStatus)
+                    .userIdOfPollCreator(poll.getUser().getUserId())
                     .build();
         }
     }
 
-    public List<Poll> getAllPolls() {
-        return pollRepository.findAll();
+    public List<PollSurface> getAllPollsSurface() {
+        List<Poll> allPolls = pollRepository.findAll();
+        List<PollSurface> result = new ArrayList<>();
+
+        for (Poll poll : allPolls) {
+            PollSurface pollSurface = PollSurface.builder()
+                    .pollContent(poll.getPollContent())
+                    .nameOfPoster(poll.getUser().getUsername())
+                    .totalVotes(poll.getTotalVotes())
+                    .pollId(poll.getPollId())
+                    .build();
+            result.add(pollSurface);
+        }
+
+        return result;
     }
 
 //    public Map<PollOption,Integer> getPollResults(Poll poll) {
@@ -115,6 +145,8 @@ public class PollService {
             throw new InvalidPollDataException(String.format("pollId of %d is invalid", pollId));
         }
         Poll poll = pollOpt.get();
+        poll.setTotalVotes(poll.getTotalVotes() + 1);
+        pollRepository.save(poll);
 
         if (poll.isHasEnded()) {
             return false;

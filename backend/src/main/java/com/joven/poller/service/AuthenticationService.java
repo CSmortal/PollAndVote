@@ -43,6 +43,7 @@ public class AuthenticationService {
             return RegisterResponse.builder()
                     .token(jwtToken)
                     .success(true)
+                    .userId(user.getUserId()) // might be null
                     .build();
 
         } catch (Exception e) {
@@ -70,12 +71,13 @@ public class AuthenticationService {
                     )
             );
             SecurityContextHolder.getContext().setAuthentication(result);
-            UserDetails userDetails = userRepository.findByEmail(request.getEmail()).orElseThrow();
-            String token = jwtService.generateToken(userDetails);
+            User user = userRepository.findByEmail(request.getEmail()).orElseThrow();
+            String token = jwtService.generateToken(user);
 
             return AuthenticationResponse.builder()
                     .token(token)
                     .success(true)
+                    .userId(user.getUserId())
                     .build();
         } catch (Exception e) {
             return AuthenticationResponse.builder()

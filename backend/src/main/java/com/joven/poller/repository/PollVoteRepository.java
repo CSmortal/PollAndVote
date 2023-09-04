@@ -20,4 +20,6 @@ public interface PollVoteRepository extends JpaRepository<PollVote,Long> {
     )
     public Integer countPollVotesForPollOption(@Param("pollOptionId") Long pollOptionId);
 
+    @Query("SELECT PV.pollOption.pollOptionId FROM PollVote PV WHERE PV.pollOption.poll.pollId = :pollId AND PV.user.userId = :userId")
+    public List<Long> findAllVotesFromUserForPoll(Long pollId, Long userId);
 }

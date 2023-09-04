@@ -9,6 +9,7 @@ import com.joven.poller.entity.PollOption;
 import com.joven.poller.entity.User;
 import com.joven.poller.exception.InvalidPollDataException;
 import com.joven.poller.response.PollResponse;
+import com.joven.poller.response.PollSurface;
 import com.joven.poller.service.PollService;
 import com.joven.poller.service.UserService;
 import com.joven.poller.validation.CreatePollDTOValidator;
@@ -17,6 +18,7 @@ import com.joven.poller.validation.VoteDTOValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -59,6 +61,7 @@ public class ApplicationController {
                 .onlyOneSelection(pollDto.isOnlyOneSelection())
                 .hasEnded(false)
                 .user(userWhoIsCreatingPoll)
+                .totalVotes(0L)
                 .build();
 
         List<PollOption> pollOptionsForNewPoll = new ArrayList<>();
@@ -74,9 +77,9 @@ public class ApplicationController {
         boolean isCreated = pollService.createPoll(newPoll, pollOptionsForNewPoll);
 
         if (!isCreated) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(false);
         } else {
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(true);
         }
     }
 
@@ -92,8 +95,15 @@ public class ApplicationController {
 
     }
 
+    @GetMapping(path="/getAllPolls")
+    public ResponseEntity<List<PollSurface>> getAllPollsSurface() {
+        List<PollSurface> result = pollService.getAllPollsSurface();
+        return ResponseEntity.ok(result);
+    }
+
     @GetMapping(path = "/getPoll")
     public ResponseEntity<PollResponse> getPollResults(@RequestParam Long pollId, @RequestParam Long userId) {
+        // need to return the options that the user selected as well, if he/she alr voted
         try {
             PollResponse result = pollService.getPollResults(pollId, userId);
             return ResponseEntity.ok(result);

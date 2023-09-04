@@ -10,6 +10,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsUtils;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -23,6 +29,8 @@ public class SecurityConfig {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
+                .requestMatchers(CorsUtils::isPreFlightRequest) // Handle preflight requests
+                .permitAll()
                 .requestMatchers("/auth/**")
                 .permitAll()
                 .anyRequest()
@@ -34,6 +42,25 @@ public class SecurityConfig {
                 .authenticationProvider(authProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
+
         return http.build();
+    }
+
+    @Bean
+    public CorsFilter corsFilter() {
+        CorsConfiguration corsConfig = new CorsConfiguration();
+
+//        corsConfig.addAllowedMethod("*");
+        corsConfig.setAllowedMethods(List.of("GET", "POST" , "PUT", "OPTIONS"));
+        corsConfig.addAllowedHeader("*");
+        corsConfig.setAllowCredentials(true);
+        corsConfig.setAllowedOrigins(List.of("http://localhost:3000"));
+        corsConfig.setAllowedOriginPatterns(List.of(""));
+//        corsConfig.addAllowedOrigin("*");
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        // we can register multiple configurations for different types of urls (or patterns). For example, if a client user that is an admin accesses a endpoint under /admin, we should only allow very specific origins or HTTP methods
+        source.registerCorsConfiguration("/**", corsConfig); // Apply the config to all urls
+        return new CorsFilter(source);
     }
 }

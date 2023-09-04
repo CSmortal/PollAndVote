@@ -13,4 +13,5 @@ public class AuthenticationResponse {
     private String token;
     private boolean success;
     private String errorMsg;
+    private Long userId;
 }

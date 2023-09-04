@@ -13,15 +13,24 @@ import java.util.Map;
 @NoArgsConstructor
 @Builder
 public class PollResponse {
-    private Map<String,Double> mapOptionToPercentage;
+    private Map<String,Double> mapOptionContentToPercentage;
 
     // we need to return this to client so that we know which options he/she selects when voting.
     @NotNull
-    private Map<String,Long> mapOptionToOptionId;
+    private Map<Long,String> mapOptionIdToOptionContent;
 
     @NotNull
-    private Integer totalVotes;
+    private Long totalVotes;
+
+    private boolean hasLimitedView;
+
+    private boolean hasUserVoted;
+
+    private boolean voteOnlyForOneOption;
 
     @NotNull
-    private Boolean isLimitedView;
+    private Map<Long,Boolean> mapOptionIdToVoteStatus; // will only contain optionIds that have been voted for, so if user did not vote, this map is empty
+
+    @NotNull
+    private Long userIdOfPollCreator;
 }

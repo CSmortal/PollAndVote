@@ -27,6 +27,8 @@ public class Poll {
     @Column(name = "ended")
     private boolean hasEnded = false; // poll must be manually ended by user
 
+    private Long totalVotes;
+
     @ManyToOne(
             optional = false
     )

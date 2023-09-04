@@ -13,4 +13,5 @@ public class RegisterResponse {
     private String token;
     private boolean success;
     private String errorMessage;
+    private Long userId;
 }
