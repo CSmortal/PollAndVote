@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import "../../css/CreatePollOption.css"
 
 const CreatePollOption = React.forwardRef((props, ref) => {
     const [ optionContent, setOptionContent ] = useState("")
@@ -9,8 +10,8 @@ const CreatePollOption = React.forwardRef((props, ref) => {
     }
 
     return (
-        <div>
-            <input
+        <div className="createPollOption">
+            <input className="createPollOption-input"
                 type="text"
                 value={optionContent}
                 onChange={handleChange}

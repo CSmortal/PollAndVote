@@ -2,6 +2,7 @@
 import PollSurface from "../poll/PollSurface"
 import {useState, useEffect} from "react"
 import {useNavigate} from "react-router-dom";
+import "../../css/Dashboard.css"
 
 export default function Dashboard() {
     const [pollSurfaces, setPollSurfaces] = useState([])
@@ -28,22 +29,28 @@ export default function Dashboard() {
     let isThereNoPolls = Array.isArray(pollSurfaces) && !pollSurfaces.length
 
     return (
-        <div>
-            <h1>Dashboard</h1>
-            <button className="createPollBtn" onClick={() => navigate('/createPoll')}>Create Poll</button>
-            {
-                !isThereNoPolls && pollSurfaces && pollSurfaces.map((pollSurface, index) => (
-                    <PollSurface
-                        key={index}
-                        nameOfPoster={pollSurface.nameOfPoster}
-                        pollContent={pollSurface.pollContent}
-                        totalVotes={pollSurface.totalVotes}
-                        pollId = {pollSurface.pollId}
-                    />
-                ))
-            }
-        </div>
+        <>
+            <h1 className="title">Dashboard</h1>
+            <div className="dashboard-container">
 
+                <button className="createPollBtn" onClick={() => navigate('/createPoll')}>Create Poll</button>
+                <div className="allPolls-container">
+                    {
+                        !isThereNoPolls && pollSurfaces && pollSurfaces.map((pollSurface, index) => (
+                            <PollSurface
+                                key={index}
+                                nameOfPoster={pollSurface.nameOfPoster}
+                                pollContent={pollSurface.pollContent}
+                                totalVotes={pollSurface.totalVotes}
+                                pollId = {pollSurface.pollId}
+                                hasPollEnded = {pollSurface.pollEnded}
+                            />
+                        ))
+                    }
+                </div>
+
+            </div>
+        </>
 
     );
 }

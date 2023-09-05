@@ -1,0 +1,81 @@
+.title {
+    margin: 50px 0 50px 0;
+    font-size: 60px;
+    word-wrap: anywhere;
+    width: 80vw;
+    padding: 0 100px 0 100px;
+}
+
+.stickyContainerForTop {
+    display: flex;
+    flex-direction: column;
+}
+
+.endPoll-btn {
+    background-color: #c2190a;
+    color: #fff;
+    padding: 10px;
+    border: 1px solid #2c302d;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 150px;
+    align-self: center;
+    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.4);
+    margin-top: 10px;
+}
+
+.votes {
+    font-size: 24px;
+    text-align: center;
+}
+
+.multipleSelections {
+    font-size: 24px;
+    text-align: center;
+    color: crimson;
+    font-weight: bold;
+}
+
+.backToDashboard-btn {
+    position: fixed;
+    top: 30px;
+    left: 30px;
+    background-color: #007bff;
+    color: #fff;
+    padding: 16px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.pollDetail-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    min-height: 100vh;
+    position: relative;
+}
+
+.pollDetail-pollOptionsContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 180px;
+}
+
+.submitVote-btn {
+    background-color: #2ea339;
+    color: #fff;
+    padding: 10px;
+    margin: 10px 0 0px 0;
+    border: 1px solid #2c302d;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 150px;
+    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.4);
+}

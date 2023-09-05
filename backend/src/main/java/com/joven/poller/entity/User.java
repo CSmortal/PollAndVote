@@ -2,7 +2,6 @@ package com.joven.poller.entity;
 
 import com.joven.poller.Role;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,7 +26,8 @@ public class User implements UserDetails {
     @GeneratedValue
     private Long userId;
 
-    private String userName; // this is the user's actual name when registering, not impt for auth
+    @Column(name = "user_name")
+    private String name; // this is the user's actual name when registering, not impt for auth
 
     @Column(unique = true)
     private String email; // this is the "username" in the register/login form

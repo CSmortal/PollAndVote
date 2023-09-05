@@ -30,7 +30,7 @@ public class AuthenticationService {
 
     public RegisterResponse register(RegisterRequest request) {
         User user = User.builder()
-                .userName(request.getName())
+                .name(request.getName())
                 .email(request.getEmail()) // altho this column should be unique, we dont proactively check the database if there is a duplicate value, because we might have race conditions (there could be another register request of the same email that has not yet been saved)
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)

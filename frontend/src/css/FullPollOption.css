@@ -1,0 +1,43 @@
+.selectedPollOptionFull {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #19BE7B;
+    width: 650px;
+    padding: 5px 35px;
+    margin: 6px 0;
+    border-radius: 15px;
+    border: 2px solid black;
+    position: relative;
+    height: 90px;
+}
+
+.unselectedPollOptionFull {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #cccccc;
+    width: 650px;
+    padding: 5px 35px;
+    margin: 12px 0;
+    border-radius: 15px;
+    border: 2px solid black;
+    position: relative;
+    height: 90px;
+}
+
+.optionContent {
+    font-weight: bold;
+    font-size: 20px;
+    word-wrap: anywhere;
+}
+
+.percentageVoted {
+    text-align: center;
+    font-size: 24px;
+    color: #010842;
+}
+
+.pollEnded-announcement {
+    color: black;
+}

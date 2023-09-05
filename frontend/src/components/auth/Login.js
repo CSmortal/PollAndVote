@@ -1,6 +1,7 @@
 import {Fragment, useContext, useState} from "react";
 import {Link} from "react-router-dom";
 import {AuthContext} from "../../App";
+import "../../css/Login.css"
 
 export default function Login() {
     const { setIsAuth } = useContext(AuthContext)
@@ -44,28 +45,30 @@ export default function Login() {
     }
 
     return (
-        <Fragment>
-            <h1>Login</h1>
+        <div className="login-container">
+            <h1 className="title">PollAndVote</h1>
 
-            <form onSubmit={onSubmitForm}>
+            <form onSubmit={onSubmitForm} className="login-form">
                 <input
+                    className="login-input"
                     type="text"
                     name="email"
                     value={email}
                     onChange={e => onInputChange(e)}
-                    placeholder="email"
+                    placeholder="Email"
                 />
                 <input
+                    className="login-input"
                     type="password"
                     name="password"
                     value={password}
                     onChange={e => onInputChange(e)}
-                    placeholder="password"
+                    placeholder="Password"
                 />
-                <button>Submit</button>
+                <button className="login-button">Login</button>
             </form>
 
-            <Link to="/register">Go to register page</Link>
-        </Fragment>
+            <Link to="/register" className="register-link">Go to register page</Link>
+        </div>
     );
 }

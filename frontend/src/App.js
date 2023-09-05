@@ -1,5 +1,5 @@
 import logo from './logo.svg';
-import './App.css';
+import './css/App.css';
 import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
 import {createContext, useState} from "react";
 import {AuthContextProvider} from "./context/MyAuthContext";

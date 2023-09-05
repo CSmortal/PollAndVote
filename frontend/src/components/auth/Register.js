@@ -1,6 +1,7 @@
 import {Fragment, useContext, useState} from "react";
 import {Link} from "react-router-dom"
 import {AuthContext} from "../../App";
+import "../../css/Register.css"
 
 export default function Register() {
     const { setIsAuth } = useContext(AuthContext);
@@ -46,11 +47,12 @@ export default function Register() {
 
 
     return (
-        <Fragment>
-            <h1>Register</h1>
+        <div className="register-container">
+            <h1 className="titleRegister">Register</h1>
 
-            <form onSubmit={onSubmitForm}>
+            <form className="register-form" onSubmit={onSubmitForm}>
                 <input
+                    className="register-form-input"
                     type="text"
                     name="name"
                     value={name}
@@ -58,6 +60,7 @@ export default function Register() {
                     onChange={e => onInputChange(e)}
                 />
                 <input
+                    className="register-form-input"
                     type="text"
                     name="email"
                     value={email}
@@ -65,16 +68,19 @@ export default function Register() {
                     onChange={e => onInputChange(e)}
                 />
                 <input
+                    className="register-form-input"
                     type="password"
                     name="password"
                     value={password}
                     placeholder="Password"
                     onChange={e => onInputChange(e)}
                 />
-                <button>Register as new user</button>
+                <button className="register-form-register-btn">Register</button>
             </form>
 
             <Link to="/login">Go to login page</Link>
-        </Fragment>
+
+        </div>
+
     )
 }

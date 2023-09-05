@@ -73,7 +73,12 @@ public class PollService {
         }
 
         for (Map.Entry<String,Double> entry : mapOptionsToPercentageVoted.entrySet()) {
-            entry.setValue(100 * entry.getValue() / totalVotesCount);
+            if (totalVotesCount == 0) {
+                entry.setValue((double) 0);
+            } else {
+                entry.setValue(100 * entry.getValue() / totalVotesCount);
+            }
+
         }
 
         Map<Long,Boolean> mapOptionIdToVoteStatus = new HashMap<>();
@@ -114,9 +119,10 @@ public class PollService {
         for (Poll poll : allPolls) {
             PollSurface pollSurface = PollSurface.builder()
                     .pollContent(poll.getPollContent())
-                    .nameOfPoster(poll.getUser().getUsername())
+                    .nameOfPoster(poll.getUser().getName())
                     .totalVotes(poll.getTotalVotes())
                     .pollId(poll.getPollId())
+                    .pollEnded(poll.isHasEnded())
                     .build();
             result.add(pollSurface);
         }

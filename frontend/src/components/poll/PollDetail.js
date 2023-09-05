@@ -2,6 +2,7 @@ import {useEffect, useState, } from "react"
 import {useLocation, useNavigate, useParams} from "react-router-dom"
 import PartialPollOption from "./PartialPollOption"
 import FullPollOption from "./FullPollOption"
+import "../../css/PollDetail.css"
 
 export default function PollDetail() {
     const { pollId } = useParams();
@@ -142,55 +143,72 @@ export default function PollDetail() {
 
     // If non limited view, can see everything
     if (pollContent) {
+
         if (hasLimitedView) {
             return (
-                <div>
+                <div className="pollDetail-container">
+                    <button className="backToDashboard-btn" onClick={handleBackButton}>Back to Dashboard</button>
 
-                    <h1>{pollContent}</h1>
-                    { userIdOfPollCreator === parseInt(userId) && <button onClick={handleEndPoll}>End poll</button> }
-                    <button onClick={handleBackButton}>Back to Dashboard</button>
+                    <div className="stickyContainerForTop">
+                        <h2 className="title">{pollContent}</h2>
+                        { userIdOfPollCreator === parseInt(userId) && <button className="endPoll-btn" onClick={handleEndPoll}>End poll</button> }
+                        <h2 className="votes">{`Votes: ${totalVotes}`}</h2>
+                    </div>
 
-                    <h2>{`Total Votes: ${totalVotes}`}</h2>
-                    { !voteOnlyForOneOption && <div><h3>Multiple selections allowed</h3></div> }
+                    { !voteOnlyForOneOption && <h3 className="multipleSelections">Multiple selections allowed</h3> }
 
-                    { mapOptionIdToOptionContent &&
-                        Object.entries(mapOptionIdToOptionContent).map(([optionId, optionContent], index) => (
-                            <PartialPollOption
-                                key={index}
-                                optionContent={optionContent}
-                                hasUserVoted={hasUserVoted}
-                                onOptionSelect={id => handleOptionSelect(id)}
-                                optionId={optionId}
-                                isSelectedByUser={selectedOptions.has(optionId)}
-                                onlyOneOptionAllowed={voteOnlyForOneOption}
-                            />
-                        ) )
-                    }
+                    <div className="pollDetail-pollOptionsContainer">
+                        { mapOptionIdToOptionContent &&
+                            Object.entries(mapOptionIdToOptionContent).map(([optionId, optionContent], index) => (
+                                <PartialPollOption
+                                    key={index}
+                                    optionContent={optionContent}
+                                    hasUserVoted={hasUserVoted}
+                                    onOptionSelect={id => handleOptionSelect(id)}
+                                    optionId={optionId}
+                                    isSelectedByUser={selectedOptions.has(optionId)}
+                                    onlyOneOptionAllowed={voteOnlyForOneOption}
+                                />
+                            ) )
+                        }
+                        {!hasUserVoted && <button className="submitVote-btn" onClick={handleSubmitVote}>Submit Vote</button>}
+                    </div>
 
-
-                    <button onClick={handleSubmitVote}>Submit Vote</button>
 
                 </div>
+
+
+
+
             )
         } else {
             return (
-                <div>
-                    <h1>{pollContent}</h1>
-                    <button onClick={handleBackButton}>Back to Dashboard</button>
+                <div className="pollDetail-container">
+                    <button className="backToDashboard-btn" onClick={handleBackButton}>Back to Dashboard</button>
 
-                    {totalVotes && (<h2>{"Total Votes: " + totalVotes}</h2>)}
-                    { !voteOnlyForOneOption && <div><h3>Multiple selections allowed</h3></div>}
+                    <div className="stickyContainerForTop">
+                        <h2 className="title">{pollContent}</h2>
+                        <h2 className="votes">{"Votes: " + totalVotes}</h2>)
+                    </div>
 
-                    { mapOptionIdToOptionContent &&
-                        Object.entries(mapOptionIdToOptionContent).map(([optionId, optionContent], index) => (
-                            <FullPollOption
-                                key={index}
-                                optionContent={optionContent}
-                                percentageVoted={mapOptionContentToPercentage[optionContent]}
-                                isSelectedByUser={selectedOptions.has(optionId)}
-                            />
-                        ) )
-                    }
+                    { !voteOnlyForOneOption && <h3 className="multipleSelections">Multiple selections allowed</h3>}
+
+                    <p className="pollEnded-announcement">Poll has ended, and here are the results!</p>
+
+                    <div className="pollDetail-pollOptionsContainer">
+                        { mapOptionIdToOptionContent &&
+                            Object.entries(mapOptionIdToOptionContent).map(([optionId, optionContent], index) => (
+                                <FullPollOption
+                                    key={index}
+                                    optionContent={optionContent}
+                                    percentageVoted={mapOptionContentToPercentage[optionContent]}
+                                    isSelectedByUser={selectedOptions.has(optionId)}
+                                />
+                            ) )
+                        }
+
+                    </div>
+
                 </div>
             )
         }

@@ -1,4 +1,4 @@
-
+import "../../css/PartialPollOption.css"
 // this class is used when the poll hasnt ended, so there is a limited view
 export default function PartialPollOption(props) {
     const { optionId, hasUserVoted, optionContent, onOptionSelect, isSelectedByUser, onlyOneOptionAllowed } = props
@@ -22,16 +22,16 @@ export default function PartialPollOption(props) {
             { onlyOneOptionAllowed
                 ? (
                     <>
-                        <label htmlFor="option">{optionContent}</label>
-                        { !hasUserVoted && (<input type="radio" id="option" name="option"/>) }
+                        <label className="optionContent" htmlFor="option">{optionContent}</label>
+                        { !hasUserVoted && (<input type="radio" id="option" name="option" checked={isSelectedByUser}/>) }
                     </>
                    )
 
 
                 : (
                     <>
-                        <label htmlFor="option">{optionContent}</label>
-                        { !hasUserVoted && (<input type="checkbox" id="option" name="option"/>) }
+                        <label className="optionContent" htmlFor="option">{optionContent}</label>
+                        { !hasUserVoted && (<input type="checkbox" id="option" name="option" checked={isSelectedByUser}/>) }
                     </>
                   )
             }

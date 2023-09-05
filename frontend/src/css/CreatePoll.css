@@ -1,0 +1,96 @@
+.createPoll-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    position: relative;
+}
+
+/*.title {*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    position: sticky;*/
+/*    top: 150px;*/
+/*    margin: 150px 0 100px 0;*/
+/*    font-size: 36px;*/
+/*}*/
+
+.createPoll-onlyAllowOneOption {
+    display: flex;
+    justify-content: center;
+    /*margin: 50px 0 50px 0;*/
+    position: absolute;
+    top: 250px;
+}
+
+.createPoll-titleContainer {
+    position: absolute;
+    top: 120px;
+}
+
+.createPoll-newPollTitle {
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 34px;
+    width: 600px;
+
+}
+
+.newPollTitle-instruction {
+    font-size: 12px;
+    margin: 0 0 0 8px;
+}
+
+.onlyAllowOneOption-label {
+    font-size: 20px;
+    text-align: center;
+    color: crimson;
+    font-weight: bold;
+    margin-right: 20px;
+}
+
+.createPoll-pollOptionsContainer {
+    position: relative;
+    top: 70px;
+}
+
+.createPoll-pollOptions-instruction {
+    font-size: 12px;
+    margin: 0 0 0 8px;
+}
+
+.createPoll-addOptionBtn {
+    background-color: #333333;
+    color: #fff;
+    padding: 10px;
+    border: 1px solid #2c302d;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 150px;
+    align-self: center;
+    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.4);
+    margin-top: 10px;
+}
+
+.submitNewPollBtn {
+    background-color: #2ea339;
+    color: #fff;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #2c302d;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 150px;
+    align-self: center;
+    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.4);
+}
+
+.createPoll-addOptionAndSubmit-container {
+    display: flex;
+    flex-direction: column;
+}

@@ -20,7 +20,11 @@ public class PollSurface {
     @NotBlank
     private String nameOfPoster;
 
+    @NotNull
     private Long totalVotes;
 
+    @NotNull
     private Long pollId;
+
+    private boolean pollEnded;
 }

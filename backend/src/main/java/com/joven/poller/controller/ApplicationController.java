@@ -87,10 +87,10 @@ public class ApplicationController {
     public ResponseEntity<Boolean> endPoll(@PathVariable(value = "pollId") Long pollId) {
         try {
             pollService.endPoll(pollId);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(true);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(false);
         }
 
     }
