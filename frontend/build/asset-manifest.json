@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/PollAndVote/static/css/main.b0baefdc.css",
+    "main.js": "/PollAndVote/static/js/main.de5c9dc3.js",
+    "static/js/651.b24698f6.chunk.js": "/PollAndVote/static/js/651.b24698f6.chunk.js",
+    "static/media/logo.svg": "/PollAndVote/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "index.html": "/PollAndVote/index.html",
+    "main.b0baefdc.css.map": "/PollAndVote/static/css/main.b0baefdc.css.map",
+    "main.de5c9dc3.js.map": "/PollAndVote/static/js/main.de5c9dc3.js.map",
+    "651.b24698f6.chunk.js.map": "/PollAndVote/static/js/651.b24698f6.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b0baefdc.css",
+    "static/js/main.de5c9dc3.js"
+  ]
+}
