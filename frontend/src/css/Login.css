@@ -4,6 +4,7 @@
     align-items: center;
     justify-content: space-evenly;
     height: 100vh;
+    position: relative;
 }
 
 .login-form {
@@ -47,4 +48,13 @@
     font-size: 68px;
     color: #333;
     text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+.login-failed-text {
+    color: red;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    position: absolute;
+    bottom: 30vh;
 }

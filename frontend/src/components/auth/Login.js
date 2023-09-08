@@ -5,6 +5,7 @@ import "../../css/Login.css"
 
 export default function Login() {
     const { setIsAuth } = useContext(AuthContext)
+    const [ isRegistered, setIsRegistered ] = useState(true)
     const [inputs, setInputs] = useState({
         email: "",
         password: ""
@@ -18,7 +19,8 @@ export default function Login() {
         const body = { email, password }
 
         try {
-            const response = await fetch("http://localhost:8080/auth/login", {
+            const response = await fetch("http://MyLB-213052729.ap-southeast-1.elb.amazonaws.com/auth/login"
+        , {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json"
@@ -26,13 +28,15 @@ export default function Login() {
                 body: JSON.stringify(body)
             }).then(res => res.json())
 
-            if (response) {
+            if (response && response.success) {
                 localStorage.setItem("token", response.token)
                 localStorage.setItem("userId", response.userId)
                 setIsAuth(true) // responsible for routing to the next route from login screen
+            } else {
+                setIsRegistered(false)
             }
         } catch (error) {
-            console.error(error.message)
+            setIsRegistered(false)
         }
     }
 
@@ -67,6 +71,8 @@ export default function Login() {
                 />
                 <button className="login-button">Login</button>
             </form>
+
+            { !isRegistered && <p className="login-failed-text">Could not find a user with given credentials</p> }
 
             <Link to="/register" className="register-link">Go to register page</Link>
         </div>

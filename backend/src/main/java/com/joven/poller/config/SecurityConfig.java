@@ -31,7 +31,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers(CorsUtils::isPreFlightRequest) // Handle preflight requests
                 .permitAll()
-                .requestMatchers("/auth/**")
+                .requestMatchers("/auth/**", "/actuator/health")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

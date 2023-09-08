@@ -37,3 +37,12 @@
     width: 150px;
     align-self: center
 }
+
+.register-failed-text {
+    color: red;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    position: absolute;
+    bottom: 30vh;
+}

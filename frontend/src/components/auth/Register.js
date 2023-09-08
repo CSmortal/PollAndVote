@@ -5,6 +5,7 @@ import "../../css/Register.css"
 
 export default function Register() {
     const { setIsAuth } = useContext(AuthContext);
+    const [ isRegistered, setIsRegistered ] = useState(true)
 
     const [inputs, setInputs] = useState({
         name: "",
@@ -25,7 +26,7 @@ export default function Register() {
         e.preventDefault();
 
         try {
-            const response = await fetch("http://localhost:8080/auth/register", {
+            const response = await fetch(`http://${process.env.REACT_APP_LOAD_BALANCER_DNS}/auth/register`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -35,13 +36,15 @@ export default function Register() {
 
             console.log("response of register: " + JSON.stringify(response))
 
-            if (response) {
+            if (response && response.success) {
                 localStorage.setItem("token", response.token)
                 localStorage.setItem("userId", response.userId)
                 setIsAuth(true)
+            } else {
+                setIsRegistered(false)
             }
         } catch (error) {
-            console.error(error.message)
+            setIsRegistered(false)
         }
     }
 
@@ -77,6 +80,8 @@ export default function Register() {
                 />
                 <button className="register-form-register-btn">Register</button>
             </form>
+
+            { !isRegistered && <p className="register-failed-text">This email has already been registered!</p> }
 
             <Link to="/login">Go to login page</Link>
 

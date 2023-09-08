@@ -4,13 +4,14 @@ import {useState, useEffect} from "react"
 import {useNavigate} from "react-router-dom";
 import "../../css/Dashboard.css"
 
+
 export default function Dashboard() {
     const [pollSurfaces, setPollSurfaces] = useState([])
     const navigate = useNavigate()
 
     useEffect(() => {
         async function getAllPolls() {
-            const response = await fetch("http://localhost:8080/api/getAllPolls", {
+            const response = await fetch(`http://${process.env.REACT_APP_LOAD_BALANCER_DNS}/api/getAllPolls`, {
                 method: "GET",
                 body: JSON.stringify(),
                 headers: {
