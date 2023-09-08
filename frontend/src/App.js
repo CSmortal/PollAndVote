@@ -17,7 +17,7 @@ function App() {
 
   return (
     <AuthContext.Provider value={ {isAuth, setIsAuth} }>
-      <BrowserRouter>
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
         <Routes>
           <Route index element={isAuth ? <Navigate to={'/dashboard'}/> : <Login/>}/>
           <Route path='/login' element={isAuth ? <Navigate to={'/dashboard'}/> : <Login/>}/>
