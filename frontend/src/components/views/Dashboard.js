@@ -11,7 +11,7 @@ export default function Dashboard() {
 
     useEffect(() => {
         async function getAllPolls() {
-            const response = await fetch(`http://${process.env.REACT_APP_LOAD_BALANCER_DNS}/api/getAllPolls`, {
+            const response = await fetch(`https://${process.env.REACT_APP_LOAD_BALANCER_DNS}/api/getAllPolls`, {
                 method: "GET",
                 body: JSON.stringify(),
                 headers: {

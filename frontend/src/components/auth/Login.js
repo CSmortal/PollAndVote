@@ -19,7 +19,7 @@ export default function Login() {
         const body = { email, password }
 
         try {
-            const response = await fetch("http://MyLB-213052729.ap-southeast-1.elb.amazonaws.com/auth/login"
+            const response = await fetch(`https://${process.env.REACT_APP_LOAD_BALANCER_DNS}/auth/login`
         , {
                 method: "POST",
                 headers: {

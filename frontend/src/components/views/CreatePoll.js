@@ -46,7 +46,7 @@ export default function CreatePoll() {
         }
 
         // submit the content
-        let response = await fetch(`http://${process.env.REACT_APP_LOAD_BALANCER_DNS}/api/addPoll`, {
+        let response = await fetch(`https://${process.env.REACT_APP_LOAD_BALANCER_DNS}/api/addPoll`, {
             method: "POST",
             body: JSON.stringify(
                 {
