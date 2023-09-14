@@ -20,7 +20,7 @@ export default function PollDetail() {
 
     useEffect(() => {
         async function getPollInDetail() {
-            return await fetch(`https://${process.env.REACT_APP_LOAD_BALANCER_DNS}/api/getPoll?pollId=${pollId}&userId=${userId}`, {
+            return await fetch(`https://pollandvotelb.csmortal.store/api/getPoll?pollId=${pollId}&userId=${userId}`, {
                 headers: {
                     "Authorization" : localStorage.getItem("token")
                 }
@@ -77,7 +77,7 @@ export default function PollDetail() {
         }
 
         if (!hasUserVoted) {
-            const response = await fetch(`https://${process.env.REACT_APP_LOAD_BALANCER_DNS}/api/vote`, {
+            const response = await fetch(`https://pollandvotelb.csmortal.store/api/vote`, {
                 method: "POST",
                 headers: {
                     "Authorization" : localStorage.getItem("token"),
@@ -114,7 +114,7 @@ export default function PollDetail() {
     }
 
     async function handleEndPoll() {
-        const response = await fetch(`https://${process.env.REACT_APP_LOAD_BALANCER_DNS}/api/endPoll/${pollId}`, {
+        const response = await fetch(`https://pollandvotelb.csmortal.store/api/endPoll/${pollId}`, {
             method: "PUT",
             headers: {
                 "Authorization" : localStorage.getItem("token")
@@ -124,7 +124,7 @@ export default function PollDetail() {
         if (response) {
             // then we want this component to be rerendered to see the full results of the poll
             // make another api call to getPollResults to get the full result
-            const finalPollResult = await fetch(`https://${process.env.REACT_APP_LOAD_BALANCER_DNS}/api/getPoll?pollId=${pollId}&userId=${userId}`, {
+            const finalPollResult = await fetch(`https://pollandvotelb.csmortal.store/api/getPoll?pollId=${pollId}&userId=${userId}`, {
                 headers: {
                     "Authorization" : localStorage.getItem("token")
                 }

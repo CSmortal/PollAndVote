@@ -54,7 +54,7 @@ public class SecurityConfig {
         corsConfig.setAllowedMethods(List.of("GET", "POST" , "PUT", "OPTIONS"));
         corsConfig.addAllowedHeader("*");
         corsConfig.setAllowCredentials(true);
-        corsConfig.setAllowedOrigins(List.of("http://localhost:3000"));
+        corsConfig.setAllowedOrigins(List.of("http://localhost:3000", "https://pollandvote.csmortal.store"));
         corsConfig.setAllowedOriginPatterns(List.of(""));
 //        corsConfig.addAllowedOrigin("*");
 

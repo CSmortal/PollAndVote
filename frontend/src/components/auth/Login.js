@@ -19,7 +19,7 @@ export default function Login() {
         const body = { email, password }
 
         try {
-            const response = await fetch(`https://${process.env.REACT_APP_LOAD_BALANCER_DNS}/auth/login`
+            const response = await fetch(`https://pollandvotelb.csmortal.store/auth/login`
         , {
                 method: "POST",
                 headers: {
@@ -50,7 +50,11 @@ export default function Login() {
 
     return (
         <div className="login-container">
-            <h1 className="title">PollAndVote</h1>
+
+            <div className="titleAndIconContainer">
+              <img className="login-icon" src="poll.png" alt="polling icon"/>
+              <h1 className="login-title">PollAndVote</h1>
+            </div>
 
             <form onSubmit={onSubmitForm} className="login-form">
                 <input

@@ -26,7 +26,7 @@ export default function Register() {
         e.preventDefault();
 
         try {
-            const response = await fetch(`https://${process.env.REACT_APP_LOAD_BALANCER_DNS}/auth/register`, {
+            const response = await fetch(`https://pollandvotelb.csmortal.store/auth/register`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

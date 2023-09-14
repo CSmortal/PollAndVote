@@ -29,7 +29,7 @@ public class DatabaseHealthIndicator implements HealthIndicator {
             logger.info("Success");
             return Health.up().build();
         } else {
-            logger.error("Datbase connection is unhealthy");
+            logger.error("Database connection is unhealthy");
             return Health.down().withDetail("Error", "Database connection failure").build();
         }
     }

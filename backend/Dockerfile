@@ -1,10 +1,6 @@
 FROM alpine:3.18
 LABEL authors="jpuazaix"
 
-ENV SPRING_DATASOURCE_URL="jdbc:mysql://database-1.c1do0euvzerj.ap-southeast-1.rds.amazonaws.com/poll_and_vote"
-ENV SPRING_DATASOURCE_USERNAME="root"
-ENV SPRING_DATASOURCE_PASSWORD="PJf0r3v3r!"
-
 RUN apk add --no-cache openjdk17
 
 WORKDIR /app
