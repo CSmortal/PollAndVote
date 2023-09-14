@@ -26,6 +26,7 @@ function App() {
           <Route path='/dashboard' element={isAuth ? <Dashboard/> : <Navigate to="/login" replace={true}/>}/>
           <Route path='/createPoll' element={isAuth ? <CreatePoll/> : <Navigate to="/login" replace={true}/>}/>
           <Route path='/viewPoll/:pollId' element={isAuth ? <PollDetail/> : <Navigate to="/login" replace={true}/>}/>
+          <Route path="*" element={isAuth ? <Dashboard/> : <Login/>}/>
         </Routes>
       </BrowserRouter>
     </AuthContext.Provider>
